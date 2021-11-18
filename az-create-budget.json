@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "contactEmails": {
+      "type": "array",
+      "metadata": {
+        "description": "The list of email addresses to send the budget notification to when the threshold is exceeded."
+      }
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Consumption/budgets",
+      "apiVersion": "2021-10-01",
+      "name": "iot-academy-budget-100",
+      "properties": {
+        "timePeriod": {
+          "startDate": "2021-12-01T00:00:00Z",
+          "endDate": "2022-01-31T00:00:00Z"
+        },
+        "timeGrain": "Monthly",
+        "amount": 100,
+        "category": "Cost",
+        "notifications": {
+          "ActualExceededBudget50Percent": {
+            "enabled": true,
+            "operator": "GreaterThan",
+            "threshold": 50,
+
+            "thresholdType": "Actual",
+            "contactEmails": "[parameters('contactEmails')]"
+          },
+          "ActualExceededBudget80Percent": {
+            "enabled": true,
+            "operator": "GreaterThan",
+            "threshold": 80,
+            "thresholdType": "Actual",
+            "contactEmails": "[parameters('contactEmails')]"
+          },
+          "ActualExceededBudget100Percent": {
+            "enabled": true,
+            "operator": "GreaterThan",
+            "threshold": 100,
+            "thresholdType": "Actual",
+            "contactEmails": "[parameters('contactEmails')]"
+          },
+           "ForecastedExceededBudget100Percent": {
+            "enabled": true,
+            "operator": "GreaterThan",
+            "threshold": 100,
+            "thresholdType": "Forecasted",
+            "contactEmails": "[parameters('contactEmails')]"
+          }
+        }
+      }
+    }
+  ]
+}
